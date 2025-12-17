@@ -1,0 +1,51 @@
+# Application metadata
+spring:
+  application:
+    name: weather-service  # Service name (for logs, monitoring)
+
+  # Database connection (PostgreSQL)
+  datasource:
+    url: jdbc:postgresql://localhost:5432/weatherdb  # DB connection string
+    username: postgres  # DB user (use env var in prod!)
+    password: postgres  # DB password (use env var in prod!)
+    driver-class-name: org.postgresql.Driver  # JDBC driver
+
+  # JPA/Hibernate ORM configuration
+  jpa:
+    hibernate:
+      ddl-auto: update  # Auto-update DB schema (dev only, use migrations in prod)
+    show-sql: true  # Log SQL queries (turn off in prod)
+    properties:
+      hibernate:
+        format_sql: true  # Pretty-print SQL
+        dialect: org.hibernate.dialect.PostgreSQLDialect  # PostgreSQL-specific SQL
+
+  # In-memory cache configuration
+  cache:
+    type: caffeine  # Cache provider
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=300s  # 500 entries, 5 min TTL
+
+# Web server configuration
+server:
+  port: 8080  # HTTP port (change if needed)
+  error:
+    include-message: always  # Include error messages (be careful in prod)
+
+# Custom: OpenWeatherMap API config
+weather:
+  api:
+    key: ${WEATHER_API_KEY:YOUR_API_KEY_HERE}  # Get from environment or use default
+    base-url: https://api.openweathermap.org/data/2.5  # API base URL
+
+# Custom: JWT authentication config
+jwt:
+  secret: ${JWT_SECRET:your-secret-key-change-this-in-production-minimum-256-bits}  # Signing key
+  expiration: 86400000  # Token lifetime: 24 hours (in milliseconds)
+
+# Swagger/OpenAPI documentation
+springdoc:
+  api-docs:
+    path: /api-docs  # JSON spec endpoint
+  swagger-ui:
+    path: /swagger-ui.html  # Interactive UI endpoint
