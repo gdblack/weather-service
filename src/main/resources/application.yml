@@ -35,12 +35,12 @@ server:
 # Custom: OpenWeatherMap API config
 weather:
   api:
-    key: ${WEATHER_API_KEY:YOUR_API_KEY_HERE}  # Get from environment or use default
+    key: ${WEATHER_API_KEY}  # Get from environment or use default
     base-url: https://api.openweathermap.org/data/2.5  # API base URL
 
 # Custom: JWT authentication config
 jwt:
-  secret: ${JWT_SECRET:your-secret-key-change-this-in-production-minimum-256-bits}  # Signing key
+  secret: ${JWT_SECRET}  # Signing key
   expiration: 86400000  # Token lifetime: 24 hours (in milliseconds)
 
 # Swagger/OpenAPI documentation

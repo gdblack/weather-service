@@ -52,6 +52,7 @@ ehthumbs.db
 *.pid.lock
 logs/
 application-local.yml
+application-local-*.yml
 application-local.properties
 application-secret.yml
 application-secret.properties

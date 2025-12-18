@@ -1,0 +1,28 @@
+# Production configuration
+# Secrets come from environment variables, not this file
+
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/weatherdb}
+
+  jpa:
+    show-sql: false  # NEVER show SQL in production
+    hibernate:
+      ddl-auto: validate  # NEVER auto-update in production
+
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: never  # Don't leak error details
+
+# Environment variables (set by cloud provider)
+weather:
+  api:
+    key: ${WEATHER_API_KEY}
+
+jwt:
+  secret: ${JWT_SECRET}
+
+logging:
+  level:
+    root: WARN

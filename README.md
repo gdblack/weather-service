@@ -1,6 +1,6 @@
 Weather Service (Kotlin + Spring Boot)
 
-Overview
+## Overview
 
 Weather Service is a real‑world learning project built with Kotlin and Spring Boot. It demonstrates common backend patterns and capabilities you’ll encounter in production systems:
 
@@ -14,7 +14,7 @@ Weather Service is a real‑world learning project built with Kotlin and Spring 
 The codebase is intentionally straightforward, emphasizing clear patterns and Kotlin idioms to help you learn by example.
 
 
-Features at a Glance
+## Features at a Glance
 
 - Health endpoint for liveness checks
 - Test User API demonstrating basic CRUD patterns
@@ -23,7 +23,7 @@ Features at a Glance
 - Swagger UI to explore the API
 
 
-Tech Stack
+## Tech Stack
 
 - Language: Kotlin (JVM)
 - Runtime: Java 17
@@ -36,17 +36,27 @@ Tech Stack
 - Build: Gradle (Kotlin DSL)
 
 
-Project Layout
+## Project Layout
 
+```
+src/main/kotlin/org/example/weatherservice/
+├── config/          # Configuration classes
+├── controller/      # REST endpoints
+├── domain/          # Entities and repositories
+├── dto/             # Data transfer objects
+├── security/        # JWT and security
+└── service/         # Business logic
+```
+```
 - src/main/kotlin/org/example/weatherservice/WeatherServiceApplication.kt — main application entrypoint
 - src/main/kotlin/org/example/weatherservice/config/SecurityConfig.kt — security configuration (permitAll for dev)
 - src/main/kotlin/org/example/weatherservice/controller/* — REST controllers (health, user test, weather test)
 - src/main/kotlin/org/example/weatherservice/domain/model/* — JPA entities (User, WeatherCache)
 - src/main/kotlin/org/example/weatherservice/domain/repository/* — Spring Data repositories
 - src/main/resources/application.yml — application configuration (DB, cache, Swagger, JWT)
+```
 
-
-Key Endpoints (dev/test)
+## Key Endpoints (dev/test)
 
 - GET /actuator/health or GET /health (see HealthController) — basic health check
 - Users (test controller)
@@ -57,13 +67,13 @@ Key Endpoints (dev/test)
   - GET  /api/test/users/count — count users
   - DELETE /api/test/users/{username} — delete user by username
 
-Swagger/OpenAPI
+## Swagger/OpenAPI
 
 - OpenAPI JSON: GET /api-docs
 - Swagger UI:   GET /swagger-ui.html
 
 
-Configuration
+## Configuration
 
 See src/main/resources/application.yml for full settings. Highlights:
 
@@ -80,7 +90,7 @@ See src/main/resources/application.yml for full settings. Highlights:
 You can override any property via environment variables or an application-local.yml.
 
 
-Dependencies (from build.gradle.kts)
+### Dependencies (from build.gradle.kts)
 
 - Spring Boot Starters
   - spring-boot-starter-webmvc (REST)
@@ -106,9 +116,9 @@ Dependencies (from build.gradle.kts)
   - spring-boot-starter-*-test variants
 
 
-Getting Started (Developer Onboarding)
+## Getting Started (Developer Onboarding)
 
-Prerequisites
+### Prerequisites
 
 - Java 17 (JDK)
 - Git
@@ -142,12 +152,22 @@ docker run --name pg-weather \
   -p 5432:5432 -d postgres:16
 ```
 
-3) Set environment variables (optional but recommended)
+3) Set environment variables
 
+Create `src/main/resources/application-local.yml` with your secrets:
+```yaml
+weather:
+  api:
+    key: YOUR_API_KEY_HERE
+
+jwt:
+  secret: YOUR_JWT_SECRET_HERE
 ```
-export WEATHER_API_KEY=your_openweathermap_api_key
-export JWT_SECRET=change-me-to-a-strong-256bit-secret
-```
+
+**Get OpenWeatherMap API Key:**
+1. Sign up at https://openweathermap.org/api
+2. Copy your API key
+3. Paste into `application-local.yml`
 
 4) Build and run
 
@@ -172,26 +192,26 @@ The app will start on http://localhost:8080
 ```
 
 
-Security
+## Security
 
 - Current configuration (SecurityConfig) permits all requests for ease of local development.
 - JWT settings are wired (secret and expiration). Add authentication filters and method/security rules when you start enforcing auth.
 - Do NOT use the example JWT secret in production. Supply a strong key via env or secrets manager.
 
 
-Caching
+## Caching
 
 - Spring Cache with a Caffeine provider is enabled. Default policy: maximumSize=500, expireAfterWrite=300s.
 - Add @EnableCaching on a configuration if not already active, then annotate service methods with @Cacheable/@CacheEvict as needed.
 
 
-Database & Migrations
+## Database & Migrations
 
 - JPA/Hibernate is set to ddl-auto=update for development convenience.
 - For real projects consider adding Flyway or Liquibase migrations and switching ddl-auto off in non-dev environments.
 
 
-Developer Workflow Tips
+## Developer Workflow Tips
 
 - Kotlin + Spring: favor data classes for DTOs and entities, and extension functions for helpers.
 - Keep controllers thin; push logic to services; keep repositories focused on data access.
@@ -200,13 +220,13 @@ Developer Workflow Tips
 - Prefer ResponseEntity builders for clear status codes.
 
 
-Troubleshooting
+## Troubleshooting
 
 - Port 8080 already in use: change server.port in application.yml or free the port.
 - DB connection errors: verify PostgreSQL is running and credentials match application.yml or env overrides.
 - Swagger 404: ensure app is running and check /api-docs and /swagger-ui.html endpoints.
 
 
-License
+## License
 
 This project is provided for learning purposes. Add your preferred license if you plan to distribute.
