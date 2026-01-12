@@ -21,6 +21,7 @@ class WeatherCache(
     val humidity: Int,
     val windSpeed: Double,
     val icon: String,
+    val pressure: Int,
 
     val lastUpdated: LocalDateTime = LocalDateTime.now()
 ) {

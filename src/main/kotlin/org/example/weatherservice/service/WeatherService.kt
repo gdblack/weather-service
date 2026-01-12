@@ -23,7 +23,7 @@ class WeatherService(
     suspend fun getWeatherByCity(cityName: String): WeatherResponse {
         val cachedWeather = weatherCacheRepository.findByCityNameIgnoreCaseAndLastUpdatedAfter(
             cityName = cityName,
-            lastUpdated = LocalDateTime.now().minusDays(cacheExpirationMinutes)
+            lastUpdated = LocalDateTime.now().minusMinutes(cacheExpirationMinutes)
         )
 
         if (cachedWeather != null) {
@@ -44,11 +44,11 @@ class WeatherService(
             description = apiResponse.weather.firstOrNull()?.description ?: "Unknown",
             humidity = apiResponse.main.humidity,
             windSpeed = apiResponse.wind.speed,
-            icon = apiResponse.weather.firstOrNull()?.icon ?: ""
+            icon = apiResponse.weather.firstOrNull()?.icon ?: "",
+            pressure = apiResponse.main.pressure
         )
-
         weatherCacheRepository.save(weatherCache)
-        println("Saed to cache: $cityName")
+        println("Saved to cache: $cityName")
 
         return weatherCache.toResponse(cached = false)
     }
@@ -75,7 +75,7 @@ class WeatherService(
         humidity = this.humidity,
         windSpeed = this.windSpeed,
         icon = this.icon,
-        pressure = 0,  // Not storing pressure in cache yet
+        pressure = this.pressure,
         cached = cached,
         lastUpdated = this.lastUpdated.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
     )
